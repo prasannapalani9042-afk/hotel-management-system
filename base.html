@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{% block title %}HotelMS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="{{ 'app-body' if current_user.is_authenticated else 'auth-body' }}">
+
+{% if current_user.is_authenticated %}
+
+<aside class="sidebar" id="sidebar">
+    <div class="brand">
+        <div class="brandmark">H</div>
+        <div>
+            <h2>Hotel<span>MS</span></h2>
+            <small>SMART HOTEL MANAGEMENT</small>
+        </div>
+    </div>
+
+    <div class="nav-label">MAIN MENU</div>
+    <nav class="nav">
+        <a href="{{ url_for('auth.dashboard') }}" class="{{ 'active' if request.endpoint == 'auth.dashboard' }}">
+            <i>⌂</i><span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('booking.rooms') }}" class="{{ 'active' if request.blueprint == 'booking' }}">
+            <i>▦</i><span>Rooms & Booking</span>
+        </a>
+        <a href="{{ url_for('service.menu') }}" class="{{ 'active' if request.blueprint == 'service' }}">
+            <i>♨</i><span>Food & Service</span>
+        </a>
+        <a href="{{ url_for('review.list_reviews') }}" class="{{ 'active' if request.blueprint == 'review' }}">
+            <i>★</i><span>Reviews</span>
+        </a>
+        <a href="{{ url_for('quiz.quiz_home') }}" class="{{ 'active' if request.blueprint == 'quiz' }}">
+            <i>◆</i><span>Quiz Game</span>
+        </a>
+
+        <div class="nav-label nav-gap">ACADEMIC</div>
+
+        {% if current_user.role in ['teacher', 'admin'] %}
+        <a href="{{ url_for('attendance.mark_attendance') }}" class="{{ 'active' if request.blueprint == 'attendance' }}">
+            <i>◷</i><span>Attendance</span>
+        </a>
+        {% elif current_user.role == 'student' %}
+        <a href="{{ url_for('attendance.my_attendance') }}" class="{{ 'active' if request.blueprint == 'attendance' }}">
+            <i>◷</i><span>My Attendance</span>
+        </a>
+        {% endif %}
+
+        {% if current_user.role == 'admin' %}
+        <div class="nav-label nav-gap">ADMINISTRATION</div>
+        <a href="{{ url_for('quiz.manage_questions') }}">
+            <i>⚙</i><span>Quiz Admin</span>
+        </a>
+        <a href="{{ url_for('attendance.manage_subjects') }}">
+            <i>▤</i><span>Subjects</span>
+        </a>
+        {% endif %}
+    </nav>
+
+    <div class="sidebar-bottom">
+        <div class="mini-profile">
+            <div class="avatar">{{ (current_user.name or 'U')[0]|upper }}</div>
+            <div>
+                <strong>{{ current_user.name }}</strong>
+                <small>{{ current_user.role|capitalize }}</small>
+            </div>
+        </div>
+        <a class="logout" href="{{ url_for('auth.logout') }}">↪ <span>Logout</span></a>
+    </div>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div class="top-left">
+            <button class="menu" id="menuBtn">☰</button>
+            <div>
+                <div class="date" id="date"></div>
+                <h3>{% block pagetitle %}Dashboard{% endblock %}</h3>
+            </div>
+        </div>
+        <div class="top-right">
+            <div class="profile">
+                <div class="avatar">{{ (current_user.name or 'U')[0]|upper }}</div>
+                <div class="profile-info">
+                    <strong>{{ current_user.name }}</strong>
+                    <small>{{ current_user.role|capitalize }}</small>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </section>
+
+    <footer>© 2026 HotelMS · Smart hotel management system</footer>
+</main>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    if (menuBtn && sidebar) {
+        menuBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+    }
+
+    const dateEl = document.getElementById('date');
+    if (dateEl) {
+        dateEl.textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+    }
+</script>
+
+{% else %}
+
+<main class="auth-wrapper">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash auth-flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block auth_content %}{% endblock %}
+</main>
+
+{% endif %}
+
+</body>
+</html>

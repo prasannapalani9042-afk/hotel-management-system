@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Book Room{% endblock %}
+{% block content %}
+<h2>Book Room {{ room.room_number }} ({{ room.room_type }})</h2>
+<p>₹{{ room.price_per_night }} / night</p>
+<form method="POST" class="form-card">
+    <label>Check-in Date</label>
+    <input type="date" name="check_in" required>
+    <label>Check-out Date</label>
+    <input type="date" name="check_out" required>
+    <button type="submit" class="btn-primary">Confirm Booking</button>
+</form>
+{% endblock %}
