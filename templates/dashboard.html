@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Welcome, {{ user.name }} 👋</h2>
+<p class="subtitle">Role: <strong>{{ user.role }}</strong></p>
+
+<div class="card-grid">
+    <a href="{{ url_for('booking.rooms') }}" class="dash-card">
+        <h3>🛏️ Rooms & Bookings</h3>
+        <p>Browse rooms and manage bookings</p>
+    </a>
+    <a href="{{ url_for('service.menu') }}" class="dash-card">
+        <h3>🍽️ Food & Room Service</h3>
+        <p>Order food and track deliveries</p>
+    </a>
+    <a href="{{ url_for('review.list_reviews') }}" class="dash-card">
+        <h3>⭐ Reviews & Complaints</h3>
+        <p>Share feedback or raise a complaint</p>
+    </a>
+    <a href="{{ url_for('quiz.quiz_home') }}" class="dash-card">
+        <h3>🎮 Quiz Game</h3>
+        <p>Play, earn coins, climb the leaderboard</p>
+    </a>
+    {% if user.role in ['teacher', 'admin'] %}
+    <a href="{{ url_for('attendance.mark_attendance') }}" class="dash-card">
+        <h3>📋 Mark Attendance</h3>
+        <p>Record daily attendance</p>
+    </a>
+    <a href="{{ url_for('attendance.reports') }}" class="dash-card">
+        <h3>📊 Attendance Reports</h3>
+        <p>View attendance percentages</p>
+    </a>
+    {% endif %}
+    {% if user.role == 'student' %}
+    <a href="{{ url_for('attendance.my_attendance') }}" class="dash-card">
+        <h3>📋 My Attendance</h3>
+        <p>View your attendance history</p>
+    </a>
+    {% endif %}
+    {% if user.role == 'admin' %}
+    <a href="{{ url_for('quiz.manage_questions') }}" class="dash-card">
+        <h3>⚙️ Manage Quiz Questions</h3>
+        <p>Add or remove quiz questions</p>
+    </a>
+    <a href="{{ url_for('attendance.manage_subjects') }}" class="dash-card">
+        <h3>⚙️ Manage Subjects</h3>
+        <p>Add subjects and assign teachers</p>
+    </a>
+    {% endif %}
+</div>
+{% endblock %}
