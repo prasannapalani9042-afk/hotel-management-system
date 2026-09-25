@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Create Account · HotelMS{% endblock %}
+
+{% block auth_content %}
+<div class="auth-shell register-shell">
+
+    <section class="auth-showcase">
+        <div class="showcase-top">
+            <div class="brand brand-light">
+                <div class="brandmark">H</div>
+                <div>
+                    <h2>Hotel<span>MS</span></h2>
+                    <small>SMART HOTEL MANAGEMENT</small>
+                </div>
+            </div>
+            <span class="live-pill"><span></span> JOIN HOTELMS</span>
+        </div>
+
+        <div class="showcase-copy">
+            <p class="eyebrow">CREATE YOUR WORKSPACE</p>
+            <h1>Simple tools for a <em>better hotel experience.</em></h1>
+            <p>Create your account and bring rooms, service, bookings and daily operations together.</p>
+        </div>
+
+        <div class="feature-list">
+            <div><b>01</b><span><strong>Room management</strong> — keep availability organized.</span></div>
+            <div><b>02</b><span><strong>Guest service</strong> — manage requests with ease.</span></div>
+            <div><b>03</b><span><strong>Smart dashboard</strong> — see everything at a glance.</span></div>
+        </div>
+    </section>
+
+    <section class="auth-panel">
+        <div class="auth-form-wrap register-form-wrap">
+            <div class="form-heading">
+                <span class="step-tag">GET STARTED</span>
+                <h2>Create your account</h2>
+                <p>Fill in your details to get started.</p>
+            </div>
+
+            <form method="POST" class="auth-form">
+                <div class="field">
+                    <label for="name">Full name</label>
+                    <div class="input-wrap">
+                        <span>◉</span>
+                        <input id="name" type="text" name="name" placeholder="Your full name" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <div class="input-wrap">
+                        <span>✉</span>
+                        <input id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <div class="input-wrap">
+                            <span>●</span>
+                            <input id="password" type="password" name="password" placeholder="Create password" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="role">Role</label>
+                        <div class="input-wrap select-wrap">
+                            <span>◆</span>
+                            <select id="role" name="role">
+                                <option value="guest">Guest</option>
+                                <option value="student">Student</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit">
+                    Create account <span>→</span>
+                </button>
+            </form>
+
+            <div class="auth-divider"><span>ALREADY REGISTERED?</span></div>
+
+            <a class="outline-btn" href="{{ url_for('auth.login') }}">Back to sign in <span>↗</span></a>
+        </div>
+
+        <p class="auth-copyright">© 2026 HotelMS · Smart hotel management</p>
+    </section>
+</div>
+{% endblock %}

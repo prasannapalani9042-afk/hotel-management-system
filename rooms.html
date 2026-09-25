@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Rooms{% endblock %}
+{% block content %}
+<h2>Available Rooms</h2>
+<div class="card-grid">
+    {% for room in rooms %}
+    <div class="item-card">
+        <h3>Room {{ room.room_number }} — {{ room.room_type }}</h3>
+        <p>₹{{ room.price_per_night }} / night</p>
+        <p class="status status-{{ room.status }}">{{ room.status }}</p>
+        {% if room.status == 'available' %}
+        <a href="{{ url_for('booking.book_room', room_id=room.id) }}" class="btn-primary">Book Now</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<a href="{{ url_for('booking.my_bookings') }}" class="btn-secondary">View My Bookings</a>
+{% endblock %}
